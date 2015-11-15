@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <selector>
+            <item
+                android:drawable="@color/colorPrimary"
+                android:state_pressed="true"/>
+            <item android:drawable="@android:color/white"/>
+        </selector>
+    </item>
+    <item
+        android:height="1px"
+        android:gravity="bottom">
+        <shape>
+            <solid android:color="@android:color/darker_gray"/>
+        </shape>
+    </item>
+
+</layer-list>
