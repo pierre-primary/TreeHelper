@@ -46,14 +46,15 @@ public abstract class TreeRecyclerViewAdapter<VH extends TreeViewHolder, T> exte
 
 
     public TreeRecyclerViewAdapter(List<T> datas, int defaultExpandLevel) {
-        this.defaultExpandLevel = defaultExpandLevel;
-        nodeTree = TreeSortFilterUtil.getInitNodeTree(datas, defaultExpandLevel);
+        setData(datas, defaultExpandLevel);
     }
 
     public TreeRecyclerViewAdapter(List<T> datas) {
-        nodeTree = TreeSortFilterUtil.getInitNodeTree(datas, defaultExpandLevel);
+        setData(datas);
     }
 
+    public TreeRecyclerViewAdapter() {
+    }
 
     public void setData(List<T> datas) {
         nodeTree = TreeSortFilterUtil.getInitNodeTree(datas, defaultExpandLevel);
@@ -80,7 +81,6 @@ public abstract class TreeRecyclerViewAdapter<VH extends TreeViewHolder, T> exte
         List<Node> nodes = n.getVisibleChildrenNode();
         int count = nodes.size();
 
-        notifyItemChanged(position);
         nodeTree.addAll(position + 1, nodes);
         notifyItemRangeInserted(position + 1, count);
         return count;
@@ -100,7 +100,6 @@ public abstract class TreeRecyclerViewAdapter<VH extends TreeViewHolder, T> exte
 
         n.setExpand(false);
 
-        notifyItemChanged(position);
         nodeTree.removeAll(nodes);
         notifyItemRangeRemoved(position + 1, count);
         return count;
