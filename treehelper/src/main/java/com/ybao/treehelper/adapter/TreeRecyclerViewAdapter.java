@@ -22,9 +22,7 @@
  */
 package com.ybao.treehelper.adapter;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView.Adapter;
-import android.view.LayoutInflater;
 import android.view.View;
 
 import com.ybao.treehelper.adapter.holder.TreeViewHolder;
@@ -36,37 +34,26 @@ import java.util.List;
 
 public abstract class TreeRecyclerViewAdapter<VH extends TreeViewHolder, T> extends Adapter<VH> implements
         OnViewHolderListener {
-
-    protected Context mContext;
     /**
      * 存储所有可见的Node
      */
     protected List<Node> nodeTree;
-    protected LayoutInflater mInflater;
     protected boolean singleBranch = false;
 
-    int lsatExpandParentId = -1;
+    protected int lsatExpandParentId = -1;
 
-    int defaultExpandLevel = 0;
+    protected int defaultExpandLevel = 0;
 
 
-    public TreeRecyclerViewAdapter(Context context, List<T> datas, int defaultExpandLevel) {
+    public TreeRecyclerViewAdapter(List<T> datas, int defaultExpandLevel) {
         this.defaultExpandLevel = defaultExpandLevel;
-        mContext = context;
         nodeTree = TreeSortFilterUtil.getInitNodeTree(datas, defaultExpandLevel);
-        mInflater = LayoutInflater.from(context);
     }
 
-    public TreeRecyclerViewAdapter(Context context, List<T> datas) {
-        mContext = context;
+    public TreeRecyclerViewAdapter(List<T> datas) {
         nodeTree = TreeSortFilterUtil.getInitNodeTree(datas, defaultExpandLevel);
-        mInflater = LayoutInflater.from(context);
     }
 
-    public TreeRecyclerViewAdapter(Context context) {
-        mContext = context;
-        mInflater = LayoutInflater.from(context);
-    }
 
     public void setData(List<T> datas) {
         nodeTree = TreeSortFilterUtil.getInitNodeTree(datas, defaultExpandLevel);
@@ -238,5 +225,24 @@ public abstract class TreeRecyclerViewAdapter<VH extends TreeViewHolder, T> exte
             }
             lsatExpandParentId = -1;
         }
+    }
+
+    public Node getNodeItem(int position) {
+        if (position >= 0 && position < nodeTree.size()) {
+            return nodeTree.get(position);
+        }
+        return null;
+    }
+
+    public List<Node> getNodeTree() {
+        return nodeTree;
+    }
+
+    public int getDefaultExpandLevel() {
+        return defaultExpandLevel;
+    }
+
+    public boolean isSingleBranch() {
+        return singleBranch;
     }
 }
