@@ -70,7 +70,7 @@ public abstract class TreeRecyclerViewAdapter<VH extends TreeViewHolder, T> exte
      */
     private int expand(View v, Node n, int position) {
         if (onExpandListener != null) {
-            onExpandListener.onExpand(v, n, lsatExpandParentId);
+            onExpandListener.onExpand(v, n, position);
         }
         return expand(n, position);
     }
@@ -88,7 +88,7 @@ public abstract class TreeRecyclerViewAdapter<VH extends TreeViewHolder, T> exte
 
     private int collapse(View v, Node n, int position) {
         if (onCollapseListener != null) {
-            onCollapseListener.onCollapse(v, n, lsatExpandParentId);
+            onCollapseListener.onCollapse(v, n, position);
         }
         return collapse(n, position);
     }
