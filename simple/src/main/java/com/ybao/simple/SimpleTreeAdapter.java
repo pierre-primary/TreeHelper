@@ -33,13 +33,10 @@ import java.util.List;
  */
 public class SimpleTreeAdapter extends TreeRecyclerViewAdapter<SimpleItemHolder, SimpleNode> {
 
-    List<SimpleNode> datas;
 
-    public SimpleTreeAdapter(Context context, List<SimpleNode> datas) {
-        super(context, datas);
-        this.datas = datas;
+    public void setData(List<SimpleNode> datas) {
+        super.setData(datas);
     }
-
 
     @Override
     public void onBindViewHolder(Node node, SimpleItemHolder holder, int position) {

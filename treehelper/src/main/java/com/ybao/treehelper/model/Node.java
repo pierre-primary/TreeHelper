@@ -22,6 +22,8 @@
  */
 package com.ybao.treehelper.model;
 
+import android.support.v7.widget.RecyclerView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +46,7 @@ public class Node {
 
     //原数据
     private Object data;
+    private RecyclerView.ViewHolder holder;
 
     public Node() {
     }
@@ -134,7 +137,6 @@ public class Node {
     public void setExpand(boolean isExpand) {
         this.isExpand = isExpand;
         if (!isExpand) {
-
             for (Node node : children) {
                 node.setExpand(isExpand);
             }
@@ -156,5 +158,13 @@ public class Node {
                 getVisibleChildrenNode(result, node.getChildren());
             }
         }
+    }
+
+    public void setHolder(RecyclerView.ViewHolder holder) {
+        this.holder = holder;
+    }
+
+    public RecyclerView.ViewHolder getHolder() {
+        return this.holder;
     }
 }

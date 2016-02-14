@@ -40,16 +40,13 @@ public class MainActivity extends AppCompatActivity {
         }
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.id_tree);
 
-        SimpleTreeAdapter mAdapter = new SimpleTreeAdapter(this, simpleNodes);
-        mAdapter.setSingleBranch(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-
-        DefaultItemAnimator mAnimator = new DefaultItemAnimator();
-        mAnimator.setAddDuration(400);
-        mAnimator.setMoveDuration(300);
-
         recyclerView.setLayoutManager(layoutManager);
+
+        SimpleTreeAdapter mAdapter = new SimpleTreeAdapter();
+        mAdapter.setSingleBranch(true);
+        mAdapter.setChangeGroup(true);
         recyclerView.setAdapter(mAdapter);
-        recyclerView.setItemAnimator(mAnimator);
+        mAdapter.setData(simpleNodes);
     }
 }
