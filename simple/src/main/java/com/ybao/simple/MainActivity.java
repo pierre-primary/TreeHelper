@@ -48,5 +48,6 @@ public class MainActivity extends AppCompatActivity {
         mAdapter.setChangeGroup(true);
         recyclerView.setAdapter(mAdapter);
         mAdapter.setData(simpleNodes);
+        mAdapter.setSelectId(21);
     }
 }

@@ -49,12 +49,23 @@ public class TreeSortFilterUtil {
         return reSetNodeTree(nodes, defaultExpandLevel);
     }
 
-    public static <T> List<Node> reSetNodeTree(List<Node> nodes, int defaultExpandLevel) {
+    public static List<Node> reSetNodeTree(List<Node> nodes, int defaultExpandLevel) {
         // 拿到根节点
         List<Node> rootNodes = getRootNodes(nodes);
         // 排序以及设置Node间关系
         List<Node> result = new ArrayList<Node>();
         reSetNode(result, rootNodes, defaultExpandLevel, 0);
+        return result;
+    }
+
+
+    public static List<Node> reSetNodeTreeSelectId(List<Node> nodes, int id) {
+        // 拿到根节点
+        List<Node> rootNodes = getRootNodes(nodes);
+        // 排序以及设置Node间关系
+        setNodeSelectIdState(rootNodes, id);
+        List<Node> result = new ArrayList<Node>();
+        filteShowNode(result, rootNodes);
         return result;
     }
 
@@ -143,6 +154,34 @@ public class TreeSortFilterUtil {
             } else if (defaultExpandLeval >= currentLevel + 1) {
                 node.setExpand(true);
                 reSetNode(result, node.getChildren(), defaultExpandLeval, ++currentLevel);
+            }
+        }
+    }
+
+    /**
+     *
+     */
+    private static void setNodeSelectIdState(List<Node> rootNodes, int id) {
+        for (Node node : rootNodes) {
+            if (node.getId() == id) {
+                node.setParentExpand(true);
+            } else if (node.isLeaf()) {
+                node.setExpand(false);
+                continue;
+            } else {
+                node.setExpand(false);
+                setNodeSelectIdState(node.getChildren(), id);
+            }
+        }
+    }
+
+    private static void filteShowNode(List<Node> result, List<Node> rootNodes) {
+        for (Node node : rootNodes) {
+            result.add(node);
+            if (node.isLeaf()) {
+                continue;
+            } else if (node.isExpand()) {
+                filteShowNode(result, node.getChildren());
             }
         }
     }

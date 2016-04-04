@@ -229,7 +229,7 @@ public abstract class TreeRecyclerViewAdapter<VH extends TreeViewHolder, T> exte
         if (this.singleBranch != singleBranch) {
             this.singleBranch = singleBranch;
             if (this.nodeTree != null) {
-                TreeSortFilterUtil.reSetNodeTree(this.nodeTree, this.defaultExpandLevel);
+                this.nodeTree = TreeSortFilterUtil.reSetNodeTree(this.nodeTree, this.defaultExpandLevel);
                 this.notifyDataSetChanged();
             }
 
@@ -247,5 +247,33 @@ public abstract class TreeRecyclerViewAdapter<VH extends TreeViewHolder, T> exte
 
     public void setChangeGroup(boolean changeGroup) {
         this.changeGroup = changeGroup;
+    }
+
+    public Node setSelectId(int id) {
+        if (this.nodeTree != null) {
+            this.nodeTree = TreeSortFilterUtil.reSetNodeTreeSelectId(this.nodeTree, id);
+            this.notifyDataSetChanged();
+            if (this.singleBranch) {
+                int n = this.nodeTree.size();
+                for (int i = 0; i < n; i++) {
+                    Node node = this.nodeTree.get(i);
+                    if (node.getId() == id) {
+                        Node pNode = node.getParent();
+                        if (pNode != null) {
+                            this.lsatExpandParentId = this.nodeTree.indexOf(pNode);
+                        } else {
+                            this.lsatExpandParentId = -1;
+                        }
+                        return node;
+                    }
+                }
+
+            }
+        }
+        return null;
+    }
+
+    public List<Node> getNodeTree() {
+        return nodeTree;
     }
 }
