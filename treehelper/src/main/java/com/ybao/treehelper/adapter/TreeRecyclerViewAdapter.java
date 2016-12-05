@@ -69,32 +69,18 @@ public abstract class TreeRecyclerViewAdapter<VH extends TreeViewHolder, T> exte
      * 相应ListView的点击事件 展开或关闭某节点
      */
     private int expand(View v, Node n, int position) {
-        if (onExpandListener != null) {
-            onExpandListener.onExpand(v, n, position);
-        }
-        return expand(n, position);
-    }
-
-    public int expand(Node n, int position) {
         n.setExpand(true);
 
         List<Node> nodes = n.getVisibleChildrenNode();
         int count = nodes.size();
-
         nodeTree.addAll(position + 1, nodes);
         notifyItemRangeInserted(position + 1, count);
+
+        onExpand(v, n, position);
         return count;
     }
 
     private int collapse(View v, Node n, int position) {
-        if (onCollapseListener != null) {
-            onCollapseListener.onCollapse(v, n, position);
-        }
-        return collapse(n, position);
-    }
-
-    public int collapse(Node n, int position) {
-
         List<Node> nodes = n.getVisibleChildrenNode();
         int count = nodes.size();
 
@@ -102,7 +88,21 @@ public abstract class TreeRecyclerViewAdapter<VH extends TreeViewHolder, T> exte
 
         nodeTree.removeAll(nodes);
         notifyItemRangeRemoved(position + 1, count);
+
+        onCollapse(v, n, position);
         return count;
+    }
+
+    protected void onExpand(View v, Node n, int position) {
+        if (onExpandListener != null) {
+            onExpandListener.onExpand(v, n, position);
+        }
+    }
+
+    protected void onCollapse(View v, Node n, int position) {
+        if (onCollapseListener != null) {
+            onCollapseListener.onCollapse(v, n, position);
+        }
     }
 
     @Override
@@ -127,7 +127,8 @@ public abstract class TreeRecyclerViewAdapter<VH extends TreeViewHolder, T> exte
                     Node lsatExpandNoed = findRightLsatExpandNoed(node.getParent(), nodeTree.get(lsatExpandParentId));
                     if (lsatExpandNoed.getLevel() == node.getLevel()) {
                         lsatExpandParentId = nodeTree.indexOf(lsatExpandNoed);
-                        int count = collapse(v, lsatExpandNoed, lsatExpandParentId);
+                        int count = collapse(null, lsatExpandNoed, lsatExpandParentId);
+                        notifyItemChanged(position);
                         if (position > lsatExpandParentId) {
                             position -= count;
                         }
@@ -165,6 +166,7 @@ public abstract class TreeRecyclerViewAdapter<VH extends TreeViewHolder, T> exte
     @Override
     public void onBindViewHolder(VH holder, int position) {
         Node node = nodeTree.get(position);
+        node.setHolder(holder);
         onBindViewHolder(node, holder, position);
         holder.setOnViewHolderListener(this);
     }
